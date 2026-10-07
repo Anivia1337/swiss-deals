@@ -8,23 +8,15 @@
 ini_set('display_errors', '0');
 require_once __DIR__ . '/../includes/functions.php';
 
-const DEV_FIXTURES = __DIR__ . '/../dev-fixtures.json';
-
-$isDemo = isset($_GET['demo']);
 $days   = isset($_GET['days']) ? max(0, (int) $_GET['days']) : 30;
-$brandcolors = load_brandcolors(__DIR__ . '/../brandcolors.json');
 
 $tage = [];   // Tag => rohe Deals
-if ($isDemo) {
-    $tage['demo'] = json_decode((string) @file_get_contents(DEV_FIXTURES), true) ?: [];
-} else {
-    $files = glob(DEALS_DIR . '/deals-*.json') ?: [];
-    rsort($files);
-    $available = count($files);
-    foreach ($days ? array_slice($files, 0, $days) : $files as $path) {
-        if (preg_match('/deals-(\d{4}-\d{2}-\d{2})\.json$/', $path, $m)) {
-            $tage[$m[1]] = json_decode((string) file_get_contents($path), true) ?: [];
-        }
+$files = glob(DEALS_DIR . '/deals-*.json') ?: [];
+rsort($files);
+$available = count($files);
+foreach ($days ? array_slice($files, 0, $days) : $files as $path) {
+    if (preg_match('/deals-(\d{4}-\d{2}-\d{2})\.json$/', $path, $m)) {
+        $tage[$m[1]] = json_decode((string) file_get_contents($path), true) ?: [];
     }
 }
 
@@ -32,8 +24,8 @@ $rows = [];
 foreach ($tage as $tag => $data) {
     foreach ($data as $key => $d) {
         if (empty($d) || !is_array($d) || in_array($key, AUSGEBLENDET, true)) continue;
-        $r = normalize_deal((string) $key, $d, $brandcolors, 'assets/img', __DIR__ . '/../assets/img');
-        $r['day'] = $tag === 'demo' ? date('Y-m-d', (int) (($d['timestamp'] ?? 0) / 1000)) : $tag;
+        $r = normalize_deal((string) $key, $d, 'assets/img', __DIR__ . '/../assets/img');
+        $r['day'] = $tag;
         $rows[] = $r;
     }
 }
@@ -81,15 +73,11 @@ $v = fn($f) => @filemtime(__DIR__ . '/../' . $f) ?: 1;
     <p>Every Swiss daily deal seen so far, newest first.</p>
   </div>
 
-  <?php if ($isDemo): ?>
-    <p class="hinweisband">Demo mode: sample data, not the real history. <a href="/deals/stats/">Back to live data</a></p>
-  <?php else: ?>
-    <nav class="zeitraum" aria-label="Period">
-      <?php foreach ([7 => '7 days', 30 => '30 days', 90 => '90 days', 0 => "All ($available days)"] as $n => $label): ?>
-        <a href="?days=<?= $n ?>"<?= $days === $n ? ' aria-current="page"' : '' ?>><?= $label ?></a>
-      <?php endforeach; ?>
-    </nav>
-  <?php endif; ?>
+  <nav class="zeitraum" aria-label="Period">
+    <?php foreach ([7 => '7 days', 30 => '30 days', 90 => '90 days', 0 => "All ($available days)"] as $n => $label): ?>
+      <a href="?days=<?= $n ?>"<?= $days === $n ? ' aria-current="page"' : '' ?>><?= $label ?></a>
+    <?php endforeach; ?>
+  </nav>
 
   <?php if (!$rows): ?>
     <p class="leer">No history yet.</p>

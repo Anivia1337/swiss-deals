@@ -17,13 +17,8 @@ DirectoryIndex index.php
   Header always set Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
 </IfModule>
 
-# Scraper-Vorlage und Beispieldaten nicht ausliefern
-<FilesMatch "^(dev-fixtures|brandcolors)\.json$">
-  Require all denied
-</FilesMatch>
-
 # Git-Repository und Repo-Dateien nicht ausliefern
 RedirectMatch 404 "/\.git(attributes|ignore)?(/|$)"
-<FilesMatch "^(README\.md)$">
+<FilesMatch "^(README\.md|LICENSE)$">
   Require all denied
 </FilesMatch>

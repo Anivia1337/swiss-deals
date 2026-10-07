@@ -12,7 +12,6 @@ ini_set('display_errors', '0');
 require_once __DIR__ . '/includes/functions.php';
 
 const FALLBACK_DAYS = 3;
-const DEV_FIXTURES  = __DIR__ . '/dev-fixtures.json';
 
 // Neueste Tagesdatei mit mindestens einem Deal. Eine leere Datei (Scraper
 // lief, fand aber nichts) zaehlt nicht - sonst stand die Seite leer da,
@@ -22,20 +21,16 @@ function load_deals(): array
     for ($i = 0; $i <= FALLBACK_DAYS; $i++) {
         $path = DEALS_DIR . '/deals-' . date('Y-m-d', strtotime("-{$i} days")) . '.json';
         $data = is_readable($path) ? json_decode((string) file_get_contents($path), true) : null;
-        if (is_array($data) && array_filter($data)) return [$data, $i === 0, false];
+        if (is_array($data) && array_filter($data)) return [$data, $i === 0];
     }
-    if (isset($_GET['demo']) && is_readable(DEV_FIXTURES)) {
-        return [json_decode(file_get_contents(DEV_FIXTURES), true) ?: [], false, true];
-    }
-    return [[], false, false];
+    return [[], false];
 }
 
-[$raw, $isToday, $isDemo] = load_deals();
-$brandcolors = load_brandcolors(__DIR__ . '/brandcolors.json');
+[$raw, $isToday] = load_deals();
 $deals = [];
 foreach ($raw as $key => $d) {
     if (!empty($d) && is_array($d) && !in_array($key, AUSGEBLENDET, true)) {
-        $deals[] = normalize_deal((string) $key, $d, $brandcolors, 'assets/img', __DIR__ . '/assets/img');
+        $deals[] = normalize_deal((string) $key, $d, 'assets/img', __DIR__ . '/assets/img');
     }
 }
 // verfuegbare zuerst, dann nach Verfuegbarkeit
@@ -93,9 +88,7 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
       <p>Today's daily deals from Digitec, Galaxus, daydeal, Blick and 20 Minuten.</p>
     </div>
 
-    <?php if ($isDemo): ?>
-      <p class="hinweisband">Demo mode: sample data, not today's deals. <a href="/deals/">Back to live data</a></p>
-    <?php elseif (!$isToday && $deals): ?>
+    <?php if (!$isToday && $deals): ?>
       <p class="hinweisband">No fresh data for today yet &mdash; showing the latest available deals.</p>
     <?php endif; ?>
 

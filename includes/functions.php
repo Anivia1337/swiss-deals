@@ -1,6 +1,6 @@
 <?php
 /**
- * Gemeinsame Helfer für AllDeals (anivia.ch edition).
+ * Gemeinsame Helfer fuer Swiss Deals.
  * Wird sowohl von der Hauptseite (index.php) als auch von der Stats-Seite
  * (stats/index.php) eingebunden, damit Preis-Parsing & Co. nicht doppelt
  * gepflegt werden müssen.
@@ -99,7 +99,7 @@ function logo_for(string $key, string $imgDir): string
 }
 
 // Baut aus rohen JSON-Deal-Daten ein normalisiertes, gerechnetes Deal-Array.
-function normalize_deal(string $key, array $d, array $brandcolors, string $imgWebDir, string $imgDiskDir): array
+function normalize_deal(string $key, array $d, string $imgWebDir, string $imgDiskDir): array
 {
     $newPrice = parse_price($d['new_price'] ?? null);
     $oldPrice = parse_price($d['old_price'] ?? null);
@@ -130,16 +130,6 @@ function normalize_deal(string $key, array $d, array $brandcolors, string $imgWe
         'expired'      => $availability <= 0,
         'timestamp'    => $d['timestamp'] ?? 0,
         'updated'      => isset($d['timestamp']) ? time_elapsed_string($d['timestamp']) : '',
-        'color'        => $brandcolors[$key] ?? '#C4692A',
         'logo'         => $logoPath ? $imgWebDir . '/' . $key . '.jpg' : '',
     ];
-}
-
-function load_brandcolors(string $path): array
-{
-    if (is_readable($path)) {
-        $data = json_decode(file_get_contents($path), true);
-        if (is_array($data)) return $data;
-    }
-    return [];
 }

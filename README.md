@@ -5,10 +5,11 @@ Blick and 20 Minuten — on one page, with discount, remaining stock and the
 previous price, plus a searchable history of every deal seen so far.
 Plain PHP, no framework, no database, English UI, light/dark theme.
 
-Based on [herzkadani/alldeals](https://github.com/herzkadani/alldeals): the
-page reads the same daily JSON files its scraper writes. The front end here is
-a rewrite (new layout, robust price parsing for Swiss notations like
-`1'399.–`, calculated discounts, fallback to the last day with data).
+The deal data comes from the scraper of
+[herzkadani/alldeals](https://github.com/herzkadani/alldeals), which writes one
+JSON file per day. This repository is only the front end that reads those
+files — new code, with robust price parsing for Swiss notations like
+`1'399.–`, calculated discounts and a fallback to the last day with data.
 
 ## How it works
 
@@ -16,7 +17,7 @@ a rewrite (new layout, robust price parsing for Swiss notations like
   day to `DEALS_DIR` (`/deals/deals-YYYY-MM-DD.json` by default, set in
   `includes/functions.php`).
 - `index.php` shows the newest file that actually contains deals, up to three
-  days back. `?demo=1` uses `dev-fixtures.json` when there is no data.
+  days back.
 - `stats/` lists every deal of the last 7/30/90 days or all days, sortable and
   searchable.
 - Shops can be hidden with `AUSGEBLENDET` in `includes/functions.php`
@@ -41,10 +42,9 @@ Policy (no inline CSS/JS, no external fonts) and hides the repository files.
 | `includes/functions.php` | Loading, price parsing, shop names |
 | `app.js` | Light/dark toggle, search |
 | `stil.css` | Styles |
-| `assets/img/` | Shop logos |
-| `brandcolors.json`, `dev-fixtures.json` | Shop colours and demo data from alldeals |
+| `assets/img/` | Shop logos (trademarks of the respective shops) |
 
 ## License
 
-The original alldeals project has no license; ask its author before reusing
-the parts that come from it (data format, demo data, logos).
+MIT for the code in this repository. The scraper is not included — see
+alldeals for it.
