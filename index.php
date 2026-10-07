@@ -19,9 +19,8 @@ const FALLBACK_DAYS = 3;
 function load_deals(): array
 {
     for ($i = 0; $i <= FALLBACK_DAYS; $i++) {
-        $path = DEALS_DIR . '/deals-' . date('Y-m-d', strtotime("-{$i} days")) . '.json';
-        $data = is_readable($path) ? json_decode((string) file_get_contents($path), true) : null;
-        if (is_array($data) && array_filter($data)) return [$data, $i === 0];
+        $data = tag_laden(date('Y-m-d', strtotime("-{$i} days")));
+        if (array_filter($data)) return [$data, $i === 0];
     }
     return [[], false];
 }

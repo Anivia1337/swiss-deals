@@ -18,6 +18,10 @@ files — new code, with robust price parsing for Swiss notations like
   `includes/functions.php`).
 - `index.php` shows the newest file that actually contains deals, up to three
   days back.
+- `blick.php` fills a gap of the scraper: it reads Blick's daily *and* weekly
+  deal straight from [box.blick.ch/deals](https://box.blick.ch/deals) into
+  `data/blick-YYYY-MM-DD.json`. Entries missing or empty in the scraper's file
+  are taken from there.
 - `stats/` lists every deal of the last 7/30/90 days or all days, sortable and
   searchable.
 - Shops can be hidden with `AUSGEBLENDET` in `includes/functions.php`
@@ -29,8 +33,14 @@ files — new code, with robust price parsing for Swiss notations like
 
 ## Setup
 
-Requires PHP 8.1+. Put the folder on a PHP web server and point `DEALS_DIR` at
-the scraper's output. On Apache, `.htaccess` sets a strict Content Security
+Requires PHP 8.1+ with curl. Put the folder on a PHP web server, point
+`DEALS_DIR` at the scraper's output, make `data/` writable for the web server
+user and run the Blick supplement every hour as that user:
+
+```
+12 * * * * php /path/to/deals/blick.php >/dev/null 2>&1
+```
+ On Apache, `.htaccess` sets a strict Content Security
 Policy (no inline CSS/JS, no external fonts) and hides the repository files.
 
 ## Files
@@ -39,7 +49,8 @@ Policy (no inline CSS/JS, no external fonts) and hides the repository files.
 |---|---|
 | `index.php` | Today's deals (+ the price tracker, if present) |
 | `stats/` | Deal history |
-| `includes/functions.php` | Loading, price parsing, shop names |
+| `includes/functions.php` | Loading (scraper file + supplements), price parsing, shop names |
+| `blick.php` | Cron job: Blick daily/weekly deal from box.blick.ch |
 | `app.js` | Light/dark toggle, search |
 | `stil.css` | Styles |
 | `assets/img/` | Shop logos (trademarks of the respective shops) |

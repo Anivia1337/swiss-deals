@@ -22,6 +22,23 @@ const DEALS_DIR = '/deals'; // Ordner mit deals-YYYY-MM-DD.json
 // MediaMarkt: Daten stimmen nicht zuverlaessig (2026-10-04 ausgeblendet).
 const AUSGEBLENDET = ['mediamarkt'];
 
+// Eigene Ergaenzungen zum Scraper (blick.php), gleiches Format, je Tag eine Datei
+const ERGAENZUNG_DIR = __DIR__ . '/../data';
+
+// Deals eines Tages: Scraper-Datei, Luecken (fehlende oder leere Eintraege)
+// aus den eigenen Ergaenzungen gefuellt.
+function tag_laden(string $tag): array
+{
+    $lesen = fn($p) => is_readable($p) ? (json_decode((string) file_get_contents($p), true) ?: []) : [];
+    $data = $lesen(DEALS_DIR . "/deals-$tag.json");
+    foreach (glob(ERGAENZUNG_DIR . "/*-$tag.json") ?: [] as $datei) {
+        foreach ($lesen($datei) as $key => $d) {
+            if (empty($data[$key])) $data[$key] = $d;
+        }
+    }
+    return $data;
+}
+
 // Wandelt Preis-Strings wie "1'399.–", "49.90", "83.–", 369 in eine Zahl um.
 function parse_price($raw): ?float
 {

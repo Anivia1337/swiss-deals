@@ -16,7 +16,7 @@ rsort($files);
 $available = count($files);
 foreach ($days ? array_slice($files, 0, $days) : $files as $path) {
     if (preg_match('/deals-(\d{4}-\d{2}-\d{2})\.json$/', $path, $m)) {
-        $tage[$m[1]] = json_decode((string) file_get_contents($path), true) ?: [];
+        $tage[$m[1]] = tag_laden($m[1]);
     }
 }
 

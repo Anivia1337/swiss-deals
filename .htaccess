@@ -22,3 +22,6 @@ RedirectMatch 404 "/\.git(attributes|ignore)?(/|$)"
 <FilesMatch "^(README\.md|LICENSE)$">
   Require all denied
 </FilesMatch>
+<FilesMatch "^blick\.php$">
+  Require all denied
+</FilesMatch>

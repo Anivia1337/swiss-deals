@@ -1,2 +1,6 @@
 # Der Preis-Tracker ist ein eigenes Repository (Anivia1337/price-tracker).
 tracker/
+
+# Ergaenzungen zum Scraper (blick.php) sind Laufzeitdaten
+data/*
+!data/.htaccess
