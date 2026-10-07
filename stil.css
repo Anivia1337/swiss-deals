@@ -82,6 +82,42 @@ button, input { font: inherit; color: inherit; }
 .rundknopf { display: grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: var(--eck); background: none; cursor: pointer; text-decoration: none; }
 .rundknopf:hover { background: var(--hover); }
 
+/* ---- Laenderauswahl -------------------------------------------------------- */
+
+.rahmen { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1480px; margin: 0 auto; }
+.laender {
+  position: sticky; top: 49px; align-self: start;
+  display: flex; flex-direction: column; gap: 2px; padding: 24px 8px 24px 16px;
+}
+.laender a {
+  position: relative; display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--eck); text-decoration: none; color: var(--text);
+}
+.laender a:hover { background: var(--hover); }
+.laender a[aria-current] { background: var(--hover); font-weight: 600; }
+.laender a[aria-current]::before {
+  content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 16px;
+  margin-top: -8px; border-radius: 2px; background: var(--akzent);
+}
+.kuerzel {
+  display: grid; place-items: center; width: 28px; height: 20px;
+  border: 1px solid var(--linie); border-radius: 3px; background: var(--flaeche);
+  font: 600 10.5px/1 var(--schrift); letter-spacing: .04em; color: var(--text-2);
+}
+.laender .n { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--text-3); }
+
+/* Was im gewaehlten Land nicht vorkommt, ist ausgeblendet. Der Tracker bringt
+   eigene Ueberschrift und Leer-Hinweis mit - hier ersetzt durch die je Land. */
+body:not([data-land="ch"]) .land-ch,
+body[data-land="ch"] .tracker,
+.tracker > .bereich-kopf,
+.tracker #leer,
+.land-kopf { display: none; }
+body[data-land="ca"] .land-ca,
+body[data-land="de"] .land-de { display: block; }
+body[data-land="ca"] #liste > li:not([data-land="ca"]),
+body[data-land="de"] #liste > li:not([data-land="de"]) { display: none; }
+
 /* ---- Bereiche ------------------------------------------------------------- */
 
 .haupt { max-width: 1240px; margin: 0 auto; padding: 24px 16px 64px; }
@@ -210,6 +246,13 @@ button, input { font: inherit; color: inherit; }
 .tabelle .vorrat { width: 80px; margin: 0; }
 
 @media (max-width: 720px) {
+  .rahmen { grid-template-columns: minmax(0, 1fr); }
+  .laender {
+    position: static; flex-direction: row; overflow-x: auto; padding: 8px 16px;
+    border-bottom: 1px solid var(--linie); background: var(--leiste);
+  }
+  .laender a { flex: none; }
+  .laender a[aria-current]::before { left: 50%; top: auto; bottom: 0; width: 16px; height: 3px; margin: 0 0 0 -8px; }
   .kopf { flex-wrap: wrap; }
   .suche { order: 3; flex-basis: 100%; }
   .eingabe { flex-direction: column; }

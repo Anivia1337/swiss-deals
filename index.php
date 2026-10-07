@@ -80,9 +80,16 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
   </div>
 </header>
 
+<div class="rahmen">
+<nav class="laender" aria-label="Country">
+  <a href="#ch" data-land="ch"><span class="kuerzel">CH</span>Switzerland<span class="n"><?= count($deals) ?: '' ?></span></a>
+  <a href="#ca" data-land="ca"><span class="kuerzel">CA</span>Canada<span class="n"></span></a>
+  <a href="#de" data-land="de"><span class="kuerzel">DE</span>Germany<span class="n"></span></a>
+</nav>
+
 <main class="haupt">
 
-  <section class="bereich" aria-labelledby="t-ch">
+  <section class="bereich land-ch" aria-labelledby="t-ch">
     <div class="bereich-kopf">
       <h2 id="t-ch">Switzerland <span class="zahl"><?= count($deals) ?></span></h2>
       <p>Today's daily deals from Digitec, Galaxus, daydeal, Blick and 20 Minuten.</p>
@@ -121,10 +128,22 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
     <?php endif; ?>
   </section>
 
-  <?php if (is_readable(__DIR__ . '/tracker/teil.php')) include __DIR__ . '/tracker/teil.php'; ?>
+  <?php if (is_readable(__DIR__ . '/tracker/teil.php')): ?>
+  <div class="bereich-kopf land-kopf land-ca">
+    <h2>Canada</h2>
+    <p>Tracked prices from Best Buy Canada, Canada Computers and Amazon.ca, in CAD &mdash; checked every hour. Add a product with its Best Buy SKU or a product link.</p>
+  </div>
+  <div class="bereich-kopf land-kopf land-de">
+    <h2>Germany</h2>
+    <p>Tracked prices from Amazon.de, in EUR &mdash; checked every hour. Add a product with its Amazon.de link.</p>
+  </div>
+  <?php include __DIR__ . '/tracker/teil.php'; ?>
+  <p class="leer" id="land-leer" hidden>Nothing tracked here yet. Add a product above.</p>
+  <?php endif; ?>
 
   <p class="leer" id="keine-treffer" hidden>No deals match your search.</p>
 </main>
+</div>
 
 
 </body>
