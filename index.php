@@ -45,11 +45,11 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deals</title>
-<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops.">
+<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops and Amazon.de.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Deals">
-<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops.">
+<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops and Amazon.de.">
 <meta property="og:url" content="https://anivia.ch/deals/">
 <link rel="stylesheet" href="/deals/stil.css?v=<?= $v('stil.css') ?>">
 <script src="/deals/app.js?v=<?= $v('app.js') ?>" defer></script>

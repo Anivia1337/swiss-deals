@@ -24,7 +24,7 @@ files — new code, with robust price parsing for Swiss notations like
   (MediaMarkt is hidden because its data isn't reliable).
 - If a `tracker/` folder with
   [Anivia1337/price-tracker](https://github.com/Anivia1337/price-tracker)
-  exists, its section (tracked prices from Canadian shops) is shown below the
+  exists, its section (tracked prices from Canadian shops and Amazon.de) is shown below the
   Swiss deals.
 
 ## Setup
