@@ -61,6 +61,7 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
   <symbol id="s-thema" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="s-suche" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
   <symbol id="s-verlauf" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 6-6"/></symbol>
+  <symbol id="s-uebersicht" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
 </svg>
 
 <header class="kopf">
@@ -74,6 +75,7 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
     <input type="search" id="suche" placeholder="Search deals and shops" autocomplete="off">
   </label>
   <div class="kopf-rechts">
+    <a class="rundknopf" href="/start" title="Overview"><svg class="sym"><use href="#s-uebersicht"/></svg><span class="nurlesbar">Overview</span></a>
     <a class="rundknopf" href="/deals/stats/" title="History of Swiss deals"><svg class="sym"><use href="#s-verlauf"/></svg><span class="nurlesbar">History</span></a>
     <button type="button" class="rundknopf" id="thema" title="Light or dark appearance"><svg class="sym"><use href="#s-thema"/></svg><span class="nurlesbar">Switch appearance</span></button>
   </div>
