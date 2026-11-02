@@ -18,7 +18,7 @@ const FALLBACK_DAYS = 3;
 // in tracker/app.js passen.
 const LAENDER = [
     'ca' => ['Canada', 'Tracked prices from Best Buy Canada, Canada Computers and Amazon.ca, in CAD', 'Best Buy SKU (e.g. 19837076) or product link'],
-    'us' => ['United States', 'Tracked prices from Amazon.com, in USD', 'Amazon.com product link'],
+    'us' => ['United States', 'Tracked prices from Amazon.com, in USD, for delivery to New York (10001)', 'Amazon.com product link'],
     'mx' => ['Mexico', 'Tracked prices from Amazon.com.mx, in MXN', 'Amazon.com.mx product link'],
     'de' => ['Germany', 'Tracked prices from Amazon.de, in EUR', 'Amazon.de product link'],
     'fr' => ['France', 'Tracked prices from Amazon.fr, in EUR', 'Amazon.fr product link'],
