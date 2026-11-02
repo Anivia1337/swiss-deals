@@ -20,9 +20,10 @@ const LAENDER = [
     'ca' => ['Canada', 'Tracked prices from Best Buy Canada, Canada Computers and Amazon.ca, in CAD', 'Best Buy SKU (e.g. 19837076) or product link'],
     'us' => ['United States', 'Tracked prices from Amazon.com, in USD, for delivery to New York (10001)', 'Amazon.com product link'],
     'mx' => ['Mexico', 'Tracked prices from Amazon.com.mx, in MXN', 'Amazon.com.mx product link'],
-    'de' => ['Germany', 'Tracked prices from Amazon.de, in EUR', 'Amazon.de product link'],
-    'fr' => ['France', 'Tracked prices from Amazon.fr, in EUR', 'Amazon.fr product link'],
-    'it' => ['Italy', 'Tracked prices from Amazon.it, in EUR', 'Amazon.it product link'],
+    'br' => ['Brazil', 'Tracked prices from Amazon.com.br, in BRL', 'Amazon.com.br product link'],
+    'de' => ['Germany', 'Tracked prices from Amazon.de, in EUR, for delivery to Berlin', 'Amazon.de product link'],
+    'fr' => ['France', 'Tracked prices from Amazon.fr, in EUR, for delivery to Paris', 'Amazon.fr product link'],
+    'it' => ['Italy', 'Tracked prices from Amazon.it, in EUR, for delivery to Rome', 'Amazon.it product link'],
     'nl' => ['Netherlands', 'Tracked prices from Amazon.nl, in EUR', 'Amazon.nl product link'],
     'be' => ['Belgium', 'Tracked prices from Amazon.com.be, in EUR', 'Amazon.com.be product link'],
     'se' => ['Sweden', 'Tracked prices from Amazon.se, in SEK', 'Amazon.se product link'],
@@ -60,11 +61,11 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deals</title>
-<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops and Amazon in nine countries.">
+<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops and Amazon in ten countries.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Deals">
-<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops and Amazon in nine countries.">
+<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops and Amazon in ten countries.">
 <meta property="og:url" content="https://anivia.ch/deals/">
 <link rel="stylesheet" href="/deals/stil.css?v=<?= $v('stil.css') ?>">
 <script src="/deals/app.js?v=<?= $v('app.js') ?>" defer></script>
