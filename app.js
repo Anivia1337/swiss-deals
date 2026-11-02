@@ -54,8 +54,14 @@
         a.querySelector(".n").textContent = n || "";
       }
     });
+    let platzhalter = "";
+    document.querySelectorAll(".land-kopf").forEach((k) => {
+      k.classList.toggle("aktiv", k.dataset.land === land);
+      if (k.dataset.land === land) platzhalter = k.dataset.platzhalter;
+    });
+    document.querySelectorAll("#liste > li").forEach((li) => li.classList.toggle("anderes-land", li.dataset.land !== land));
     const feld = $("eingabe");
-    if (feld) feld.placeholder = land === "de" ? "Amazon.de product link" : "Best Buy SKU (e.g. 19837076) or product link";
+    if (feld && platzhalter) feld.placeholder = platzhalter;
     const leer = $("land-leer");
     if (leer) leer.hidden = land === "ch" || !!document.querySelector('#liste > li[data-land="' + land + '"]');
     filtern();

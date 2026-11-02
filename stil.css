@@ -112,11 +112,8 @@ body:not([data-land="ch"]) .land-ch,
 body[data-land="ch"] .tracker,
 .tracker > .bereich-kopf,
 .tracker #leer,
-.land-kopf { display: none; }
-body[data-land="ca"] .land-ca,
-body[data-land="de"] .land-de { display: block; }
-body[data-land="ca"] #liste > li:not([data-land="ca"]),
-body[data-land="de"] #liste > li:not([data-land="de"]) { display: none; }
+.land-kopf:not(.aktiv),
+#liste > li.anderes-land { display: none; }
 
 /* ---- Bereiche ------------------------------------------------------------- */
 

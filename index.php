@@ -13,6 +13,21 @@ require_once __DIR__ . '/includes/functions.php';
 
 const FALLBACK_DAYS = 3;
 
+// Laender des Preis-Trackers (tracker/, eigenes Repository): Kuerzel =>
+// [Name, Beschreibung, Platzhalter im Eingabefeld]. Das Kuerzel muss zu LAND
+// in tracker/app.js passen.
+const LAENDER = [
+    'ca' => ['Canada', 'Tracked prices from Best Buy Canada, Canada Computers and Amazon.ca, in CAD', 'Best Buy SKU (e.g. 19837076) or product link'],
+    'us' => ['United States', 'Tracked prices from Amazon.com, in USD', 'Amazon.com product link'],
+    'mx' => ['Mexico', 'Tracked prices from Amazon.com.mx, in MXN', 'Amazon.com.mx product link'],
+    'de' => ['Germany', 'Tracked prices from Amazon.de, in EUR', 'Amazon.de product link'],
+    'fr' => ['France', 'Tracked prices from Amazon.fr, in EUR', 'Amazon.fr product link'],
+    'it' => ['Italy', 'Tracked prices from Amazon.it, in EUR', 'Amazon.it product link'],
+    'nl' => ['Netherlands', 'Tracked prices from Amazon.nl, in EUR', 'Amazon.nl product link'],
+    'be' => ['Belgium', 'Tracked prices from Amazon.com.be, in EUR', 'Amazon.com.be product link'],
+    'se' => ['Sweden', 'Tracked prices from Amazon.se, in SEK', 'Amazon.se product link'],
+];
+
 // Neueste Tagesdatei mit mindestens einem Deal. Eine leere Datei (Scraper
 // lief, fand aber nichts) zaehlt nicht - sonst stand die Seite leer da,
 // obwohl gestern noch Deals vorlagen.
@@ -36,6 +51,7 @@ foreach ($raw as $key => $d) {
 usort($deals, fn($a, $b) => [$a['expired'], $b['availability']] <=> [$b['expired'], $a['availability']]);
 
 $h = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES);
+$tracker = is_readable(__DIR__ . '/tracker/teil.php');
 $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
 ?>
 <!doctype html>
@@ -44,11 +60,11 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deals</title>
-<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops and Amazon.de.">
+<meta name="description" content="Today's Swiss daily deals (Digitec, Galaxus, daydeal, Blick, 20 Minuten) and tracked prices from Canadian shops and Amazon in nine countries.">
 <meta name="color-scheme" content="light dark">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Deals">
-<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops and Amazon.de.">
+<meta property="og:description" content="Today's Swiss daily deals and tracked prices from Canadian shops and Amazon in nine countries.">
 <meta property="og:url" content="https://anivia.ch/deals/">
 <link rel="stylesheet" href="/deals/stil.css?v=<?= $v('stil.css') ?>">
 <script src="/deals/app.js?v=<?= $v('app.js') ?>" defer></script>
@@ -84,8 +100,9 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
 <div class="rahmen">
 <nav class="laender" aria-label="Country">
   <a href="#ch" data-land="ch"><span class="kuerzel">CH</span>Switzerland<span class="n"><?= count($deals) ?: '' ?></span></a>
-  <a href="#ca" data-land="ca"><span class="kuerzel">CA</span>Canada<span class="n"></span></a>
-  <a href="#de" data-land="de"><span class="kuerzel">DE</span>Germany<span class="n"></span></a>
+<?php if ($tracker) foreach (LAENDER as $code => [$name]): ?>
+  <a href="#<?= $code ?>" data-land="<?= $code ?>"><span class="kuerzel"><?= strtoupper($code) ?></span><?= $name ?><span class="n"></span></a>
+<?php endforeach; ?>
 </nav>
 
 <main class="haupt">
@@ -129,15 +146,13 @@ $v = fn($f) => @filemtime(__DIR__ . '/' . $f) ?: 1;
     <?php endif; ?>
   </section>
 
-  <?php if (is_readable(__DIR__ . '/tracker/teil.php')): ?>
-  <div class="bereich-kopf land-kopf land-ca">
-    <h2>Canada</h2>
-    <p>Tracked prices from Best Buy Canada, Canada Computers and Amazon.ca, in CAD &mdash; checked every hour. Add a product with its Best Buy SKU or a product link.</p>
+  <?php if ($tracker): ?>
+  <?php foreach (LAENDER as $code => [$name, $text, $platzhalter]): ?>
+  <div class="bereich-kopf land-kopf" data-land="<?= $code ?>" data-platzhalter="<?= $h($platzhalter) ?>">
+    <h2><?= $name ?></h2>
+    <p><?= $text ?> &mdash; checked every hour.</p>
   </div>
-  <div class="bereich-kopf land-kopf land-de">
-    <h2>Germany</h2>
-    <p>Tracked prices from Amazon.de, in EUR &mdash; checked every hour. Add a product with its Amazon.de link.</p>
-  </div>
+  <?php endforeach; ?>
   <?php include __DIR__ . '/tracker/teil.php'; ?>
   <p class="leer" id="land-leer" hidden>Nothing tracked here yet. Add a product above.</p>
   <?php endif; ?>
