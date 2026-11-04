@@ -158,7 +158,7 @@ body[data-land="ch"] .tracker,
 }
 .karte:hover { box-shadow: var(--schatten-hoch); }
 .deal    { grid-template-areas: "bild" "info" "vorrat" "jetzt" "stand"; }
-.produkt { grid-template-columns: 1fr 96px; grid-template-areas: "bild bild" "info info" "jetzt kurve" "diff kurve" "tief weg"; }
+.produkt { grid-template-columns: 1fr auto; grid-template-areas: "bild bild" "info info" "jetzt jetzt" "diff diff" "kurve kurve" "tief weg"; }
 
 .bild {
   grid-area: bild; position: relative; display: grid; place-items: center;
@@ -203,8 +203,31 @@ body[data-land="ch"] .tracker,
 .tiefststand { border-color: var(--runter); }
 .veraltet .jetzt, .veraltet .diff { color: var(--text-3); }
 
-.kurve { grid-area: kurve; width: 100%; height: 32px; overflow: visible; }
-.kurve polyline { fill: none; stroke: var(--akzent); stroke-width: 1.6; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+/* Preisverlauf: Flaeche links, Hoechst-/Tiefstwert rechts daneben, Zeitachse darunter */
+.kurve {
+  grid-area: kurve; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 8px;
+  margin: 10px 0 4px; font-size: 11px; font-variant-numeric: tabular-nums; color: var(--text-3);
+}
+.kurve-flaeche { position: relative; height: 72px; touch-action: pan-y; cursor: crosshair; }
+.kurve svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.kurve .raster { stroke: var(--linie); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.kurve .linie { fill: none; stroke: var(--akzent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.kurve.flach .raster { display: none; }
+.kurve-punkt {
+  position: absolute; right: -4px; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%;
+  background: var(--akzent); box-shadow: 0 0 0 2px var(--flaeche); pointer-events: none;
+}
+.kurve-kreuz { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--text-3); pointer-events: none; }
+.kurve-tip {
+  position: absolute; top: -6px; z-index: 1; margin-left: 8px; padding: 4px 8px; white-space: nowrap; pointer-events: none;
+  background: var(--leiste); border: 1px solid var(--linie); border-radius: var(--eck); box-shadow: var(--schatten-hoch);
+  color: var(--text-2);
+}
+.kurve-tip.links { transform: translateX(-100%); margin-left: -8px; }
+.kurve-tip b { display: block; font-size: 12.5px; color: var(--text); }
+.kurve-werte { position: relative; min-width: 52px; color: var(--text-2); }
+.kurve-werte span { position: absolute; right: 0; transform: translateY(-50%); white-space: nowrap; }
+.kurve-achse { display: flex; justify-content: space-between; margin-top: 4px; }
 
 .weg { grid-area: weg; justify-self: end; display: grid; place-items: center; width: 30px; height: 30px; border: 0; border-radius: var(--eck); background: none; color: var(--text-3); cursor: pointer; }
 .weg:hover { background: var(--hover); color: var(--rauf); }
